@@ -1,0 +1,29 @@
+{%extends 'layout.html'%}
+{%block title%}Choice{%endblock%}
+{%block content%}
+<a  class='btn btn-secondary btn-sm' href="{% url 'vote:index' %}">Click to return </a>
+<h4 class="text-center mb-3">
+{{data.Question_txt}}
+</h4>
+{%if error %}
+<p class="alert alert-danger">
+{{error}}
+</p>
+{% endif %}
+
+<form action="{% url 'vote:vote' data.id %}" method="post">
+{%csrf_token%}
+{% for i in data.choice_set.all %}
+<div class="from-check">
+    <input type='radio'
+    name='choice'
+    class='form-check-input'
+    id='i{{forloop.counter}}'
+    value='{{i.id}}'>
+    <label for="i{{forloop.counter}}">{{i.choice_txt}}</label>
+</div>
+{% endfor %}
+<input type="submit" value="vote" class="btn btn-success btn-block">
+</form>
+
+{%endblock%}
